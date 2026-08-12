@@ -1,0 +1,33 @@
+filters:
+  rent: { max: 4200 }
+  bedrooms: { min: 1, max: 1 }
+  sqft: { min: 500 }
+  city: "San Francisco"
+
+preferences:
+  dishwasher:
+    tier: moderate
+  sqft:
+    tier: moderate
+  in_unit_laundry:
+    tier: moderate
+
+waypoints:
+  - name: "Downtown SF"
+    lat: 37.7880
+    lng: -122.4074
+    tier: strong
+    modes:
+      walk:
+        max_minutes: 30
+      transit:
+        max_minutes: 45
+  - name: "Golden Gate Park"
+    lat: 37.7720
+    lng: -122.4500
+    tier: moderate
+    modes:
+      walk:
+        max_minutes: 30
+      transit:
+        max_minutes: 45

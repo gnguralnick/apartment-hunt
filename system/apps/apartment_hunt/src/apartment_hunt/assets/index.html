@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apartment Hunt</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Apartment Hunt</h1>
+    <p class="subtitle" id="subtitle">Loading...</p>
+    <div class="header-actions">
+        <button class="btn" id="config-btn">Config</button>
+        <button class="btn btn-primary" id="scrape-btn">Scrape All</button>
+    </div>
+</header>
+
+<div class="new-banner" id="new-banner">
+    <span id="new-banner-text"></span>
+    <span class="dismiss" id="dismiss-new">&times; Dismiss</span>
+</div>
+
+<div class="scrape-progress" id="scrape-progress"></div>
+
+<div class="main-layout">
+    <div class="map-pane"><div id="map"></div></div>
+    <div class="cards-pane">
+        <div class="toolbar">
+            <label>Sort by</label>
+            <select id="sort-select">
+                <option value="score">Score</option>
+                <option value="rent-asc">Rent (low→high)</option>
+                <option value="rent-desc">Rent (high→low)</option>
+                <option value="sqft-desc">Sqft (large→small)</option>
+                <option value="bedrooms-desc">Bedrooms</option>
+            </select>
+            <span class="hidden-toggle" id="hidden-toggle">Show hidden (0)</span>
+        </div>
+        <div class="cards-list" id="cards-list"></div>
+    </div>
+    <div class="side-panel" id="side-panel"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

@@ -17,6 +17,7 @@ dependencies = [
     "litellm>=1.88.1",
     "browser",
     "eval-worker",
+    "apartment-hunt",
 ]
 
 [dependency-groups]
@@ -65,6 +66,7 @@ members = ["system/libs/*", "system/services/*", "system/apps/*"]
 exclude = ["system/apps/terminal"]
 
 [tool.uv.sources]
+apartment-hunt = {workspace = true}
 bootstrap = { workspace = true }
 cloudflare-tunnel = { workspace = true }
 app-watcher = { workspace = true }

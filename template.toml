@@ -1,0 +1,100 @@
+# Machine-readable manifest for this template. The sibling
+# template.md holds the prose, the Requirements list, and the two
+# append-only history logs; this file is authoritative for everything
+# below. Both are generated together -- validate_template.py fails if
+# they disagree.
+format = "v2"
+
+[template]
+slug = "apartment-hunt"
+title = "Apartment Hunt"
+description = "Aggregate, filter, score, and map SF rental listings from many landlord sites"
+thumbnail = "template.svg"
+version = "v1"
+
+# How this template is DERIVED from the workspace it came from. An
+# update re-runs this recipe rather than diffing two repos, which is what
+# keeps an exclusion excluded even though the thing still exists upstream.
+[recipe]
+include = ["system/apps/apartment_hunt"]
+data_include = []
+# Only system/apps/apartment_hunt is included; the source mind's other apps
+# are deliberately not part of this recipe. Nothing was stripped out of the
+# app itself.
+exclude = []
+modification_rules = [
+    "re-add the apartment-hunt supervisord program block onto the clean base so the app runs on boot",
+    "register apartment-hunt in the root pyproject.toml dependencies and [tool.uv.sources] so `uv run apartment-hunt` resolves",
+    "replace the sample 'Work' waypoint in the seed preferences.yaml with a generic public SF landmark, so no real location ships",
+]
+
+# Everything an adopter must deal with before this is really theirs.
+# One list -- but each entry's KIND says how it is handled, because the
+# two are handled at different times by different mechanisms:
+#
+#   permission / secret / llm = ACTIVATION. The adopting agent acts on
+#   these FIRST and BY ITSELF, initiating each latchkey permission
+#   request before asking the user anything. Every one of them must have
+#   a matching requires_ line in template.md and vice versa -- the
+#   validator checks that, because an adopter once never got prompted
+#   for a permission the app needed.
+#
+#   adaptation = worked through INTERACTIVELY with the user afterwards.
+#   Prose on both sides, so it is not cross-checked.
+#
+# FILL IN, e.g.:
+#   [[requirements.permission]]
+#   scope = "slack-api"
+#   permission = "slack-read-all"
+#
+#   [[requirements.secret]]
+#   name = "SLACK_SIGNING_SECRET"
+#
+#   [requirements.llm]
+#   method = "keyed"   # keyed (ANTHROPIC_API_KEY) | keyless (claude -p)
+#
+#   [[requirements.adaptation]]
+#   summary = "the digest channel is hardcoded"
+#   resolution = "ask the user which channel to watch"
+#
+# This template needs NO permissions, secrets, or LLM access -- every scraper
+# fetches public web pages and no code calls Claude. Only adaptation entries.
+[requirements]
+
+[[requirements.adaptation]]
+summary = "every scraper and the seed preferences target San Francisco specifically"
+resolution = "an adopter in another city must repoint the scrapers at their own market's sources and rewrite preferences.yaml; the @register scraper framework is reusable but the per-site parsers are not portable as-is"
+
+[[requirements.adaptation]]
+summary = "waypoint travel times use the Google Routes API only if GOOGLE_MAPS_API_KEY is set"
+resolution = "optional -- set GOOGLE_MAPS_API_KEY for real walk/transit times; unset, it falls back to straight-line estimates and nothing breaks"
+
+[[requirements.adaptation]]
+summary = "the shipped preferences include two generic sample SF waypoints"
+resolution = "replace 'Downtown SF' and 'Golden Gate Park' with the places the user actually cares about, via the in-app Config panel"
+
+[[requirements.adaptation]]
+summary = "the Equity Residential scraper is present but disabled (site behind a Cloudflare challenge)"
+resolution = "left unregistered on purpose; leave it, or re-enable if the site's protection is ever relaxed -- other scrapers are unaffected"
+
+# What the included code needs INSTALLED. apt takes bare names: versions
+# are a function of the apt snapshot timestamp, so replaying names at the
+# adopter's timestamp yields versions consistent with the rest of their
+# environment. The other sources are not snapshot-pinned, so for them the
+# recorded version IS the pin (name = version).
+#
+# FILL IN from what the included code actually needs, e.g.:
+#   apt = ["poppler-utils"]
+#   [environment.npm_global]
+#   "@slack/cli" = "2.1.0"
+#   [environment.uv_tools]
+#   yt-dlp = "2026.7.1"
+#   [environment.cargo_crates]
+#   fd-find = "9.0.0"
+#
+# For an install with no package database (a URL-fetched binary, a browser),
+# ship a system/scripts/env.d/<NNNN>-<slug>-<name>.sh unit with NNNN >= 2000,
+# include it in the recipe above, and list it in env_d_units.
+[environment]
+apt = []
+env_d_units = []

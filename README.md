@@ -1,52 +1,68 @@
-# Your workspace
+<p align="center">
+  <img alt="Apartment Hunt" src="template.svg" width="480">
+</p>
 
-This folder is your mind's home: everything it knows, everything it builds,
-and the machinery that keeps it running.
+# Apartment Hunt
 
-## Creations
+<p align="center">
+  <a href="https://boweiliu.github.io/open-in-minds/?git_url=https://github.com/gnguralnick/apartment-hunt"><img alt="Open in Minds" height="64" src="https://img.shields.io/badge/Open%20in%20Minds-D8D1C0?style=for-the-badge"></a>
+</p>
 
-Broadly, in Minds you make "creations". These can be "code" (apps, skills, and
-the services behind them) or "data" (documents, images, notes).
+Didn't work? Create a Minds workspace and paste this to your agent:
+` /use-template https://github.com/gnguralnick/apartment-hunt`
 
-Minds makes this easier by defining some conventions for the common things
-you'll want to make:
+## Why you care
 
-1. an "app" - something you can open as a tab and interact with
-2. a "skill" - teaches your mind how to do work you care about. A skill that
-   is automatically run on a schedule is called an "automation" (the
-   machinery that runs them lives in `system/libs/automations/`; the weekly
-   Caretaker is the built-in example)
-3. some "data" - documents, images, notes, or data created by your apps and
-   skills
-4. some "customizations" - changes to any of the above. Everything in Minds
-   can be modified by you!
+Hunting for an apartment means checking a dozen landlord sites, each with its
+own listings, formats, and quirks, and holding the comparison in your head.
+Apartment Hunt pulls all of those into one place, ranks the results by what you
+actually care about -- price, space, and how far each place is from the spots
+that matter to you -- and puts them on a map so you can see your options at a
+glance instead of juggling twenty browser tabs.
 
-## What's here
+## How to use it
 
-- `apps/` - Everything you can open as a tab: the built-in apps (the
-  terminal, the browser) and the apps your mind builds for you. (A shortcut
-  to `system/apps/`.)
-- `skills/` - Everything your mind knows how to do: the built-in skills and
-  the ones it has learned for you. (A shortcut to `.agents/skills/`.)
-- `data/` - Your workspace's data: documents and project folders, files
-  you've uploaded, your mind's memories, and each app's stored data.
-- `docs/` - Guides to this workspace: what it is, how it works, and a history
-  of where it came from.
-- `system/` - The machinery that runs the workspace: the apps themselves,
-  background services, scripts, and configuration. You can look around (every
-  folder has a README), and your mind maintains it for you.
+Open the **Apartment Hunt** tab. You get a map of San Francisco with a numbered,
+rank-colored pin on every listing, next to a sortable list of listing cards.
 
-A few housekeeping files live alongside them:
+- **Scrape All** pulls fresh listings from ~18 landlord sources. New listings
+  since your last scrape are flagged.
+- **Sort** the cards by score, rent, size, or bedrooms; click a card to expand
+  its details and fly the map to its pin (and vice versa).
+- **Config** lets you set your hard filters (rent, bedrooms, bathrooms, sqft,
+  city, pets), your soft preferences and how strongly each counts (dishwasher,
+  in-unit laundry, more space, lower rent), and your **waypoints** -- the places
+  you want to be near, each with a walk/transit time budget. **Apply changes**
+  re-ranks everything instantly.
+- **Mark up** listings as you go: hide, contacted, toured, a star rating, and
+  free-text notes. It all persists between sessions.
 
-- `README.md` - This file.
-- `CLAUDE.md` - The standing instructions your mind follows.
-- `pyproject.toml` and `uv.lock` - The Python project definition; the tooling
-  requires them at the top level.
+Scoring blends your preferences with travel time to each waypoint (walking is
+preferred; transit is discounted). Set the `GOOGLE_MAPS_API_KEY` environment
+variable for real Google walk/transit times; without it, the app estimates from
+straight-line distance.
 
-## Where things are kept safe
+## Ideas for making it yours
 
-The workspace is a git repository: code and configuration changes are
-committed as your mind works. Everything under `data/` is deliberately kept
-out of git (it can be large, personal, or both) and is protected by the
-workspace's continuous encrypted backup instead, along with the rest of the
-workspace. See `docs/` for details.
+- **Hunt in a different city.** Repoint the scrapers and seed preferences at
+  your own market's landlord sites and Craigslist region.
+- **Add a source.** Drop a new scraper module in `scrapers/`, implement the
+  small `Scraper` protocol, and register it -- one import line in
+  `scrapers/catalog.py`.
+- **Change how listings are scored.** Add a new preference dimension (commute to
+  a second job, distance to transit, a "quietness" heuristic) in `scoring.py`.
+- **Auto-refresh.** Put the scrape on a schedule so the board is always fresh
+  instead of scraping on demand.
+- **Broaden the criteria.** The default preferences lean toward a one-bedroom in
+  SF -- widen the filters for studios, roommates, or a different budget.
+
+## What this is
+
+This repository is a published **minds template**: a clean, bootable
+snapshot of what a mind built, ready to adapt into your own. It is NOT the
+generic workspace template -- it is this specific project.
+
+[`template.md`](template.md) is the full manifest -- what it is, how it
+works, what it needs to run, and what to adapt -- with the
+machine-readable half (recipe, requirements, and the environment it needs
+installed) in [`template.toml`](template.toml).
