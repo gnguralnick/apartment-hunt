@@ -1,0 +1,44 @@
+[project]
+name = "apartment-hunt"
+version = "0.1.0"
+description = "Aggregate, filter, score, and map SF rental listings from many landlord sites"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "flask>=3.0",
+    "flask-sock>=0.7",
+    "werkzeug>=3.0",
+    "httpx>=0.28",
+    "beautifulsoup4>=4.14",
+    "lxml>=6.0",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+    "duckdb>=1.0",
+    "app-manifest",
+]
+
+[project.scripts]
+apartment-hunt = "apartment_hunt.runner:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/apartment_hunt"]
+
+[dependency-groups]
+dev = [
+    "imbue-common[testing]",
+    # Used by test_no_type_errors in the ratchets, pinned to the version the shell and chat use.
+    "ty==0.0.85",
+]
+
+# Makes this directory ty's project; without a [tool.ty] table ty keeps searching upward.
+[tool.ty]
+
+[tool.pytest.ini_options]
+testpaths = ["."]
+
+[tool.uv.sources]
+app-manifest = { path = "../../libs/app_manifest", editable = true }

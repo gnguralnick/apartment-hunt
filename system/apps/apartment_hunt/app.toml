@@ -1,0 +1,14 @@
+name = "apartment-hunt"
+display_name = "Apartment Hunt"
+icon = "icon.svg"
+priority = "user"
+program = "apartment-hunt"
+# A listing scrape a request starts runs on a background thread and must finish
+# after the window closes; a stop would cut it off.
+stop_when_no_windows = false
+
+# How update-app boots a throwaway preview of this app: on a free port, over a
+# scratch copy of its data (see .agents/skills/update-app/scripts/preview_app.py).
+[preview]
+env = {APARTMENT_HUNT_PORT = "{port:main}", APARTMENT_HUNT_DATA_DIR = "{copy:data}"}
+copies = {data = "data/.apps/apartment-hunt"}
